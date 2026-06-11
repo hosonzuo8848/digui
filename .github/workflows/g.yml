@@ -1,0 +1,21 @@
+name: g
+on:
+  workflow_dispatch:
+    inputs:
+      n: {required: true, default: "1"}
+      list: {required: true, default: "data/l.csv"}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy: {fail-fast: false, matrix: {i: [0]}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - run: pip install --quiet Pillow PyMuPDF
+      - env: {I: "${{ matrix.i }}", N: "${{ github.event.inputs.n }}", L: "${{ github.event.inputs.list }}"}
+        run: python g.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: "pdf_${{ matrix.i }}", path: "pdf_out/", retention-days: 7}
