@@ -18,7 +18,7 @@ jobs:
           I: "${{ matrix.i }}"
           N: "${{ github.event.inputs.n }}"
           L: "${{ github.event.inputs.list }}"
-          W: "${{ fromJSON('[\"https://2.freezz.dpdns.org\",\"https://2.bnp.indevs.in\"]')[matrix.i % 2] }}"
+          W: "https://2.freezz.dpdns.org"
         run: python g.py
       - uses: actions/upload-artifact@v4
         if: always()
